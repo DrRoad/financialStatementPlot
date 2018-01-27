@@ -1,7 +1,8 @@
 library(shiny)
 library(DT)
 library(plotly)
-
+library(rvest)
+  
 #require create.data()
 #require comparisonPlot(), or:
 devtools::install_github("ryanvoyack/financialStatementPlot")
