@@ -2,14 +2,10 @@ library(shiny)
 library(DT)
 library(plotly)
 
-
 #require create.data()
-#require comparisonPlot()
-#-----------------------------------------------
-#temp = create.data('wmt')
-#hello = temp[[2]]
-#hello2 = hello[2:length(hello)]
-#or just,
+#require comparisonPlot(), or:
+library(financialStatementPlot)
+#######app code########
 hello1<-c("\r\n                 Sales/Revenue\r\n            ","Sales Growth"," Cost of Goods Sold (COGS) incl. D&A","COGS excluding D&A","Depreciation & Amortization Expense","Depreciation","Amortization of Intangibles","COGS Growth"," Gross Income","Gross Income Growth","Gross Profit Margin",""," SG&A Expense","Research & Development","Other SG&A","SGA Growth","Other Operating Expense","Unusual Expense","EBIT after Unusual Expense","Non Operating Income/Expense","Non-Operating Interest Income","Equity in Affiliates (Pretax)"," Interest Expense","Interest Expense Growth","Gross Interest Expense","Interest Capitalized"," Pretax Income","Pretax Income Growth","Pretax Margin","Income Tax","Income Tax - Current Domestic","Income Tax - Current Foreign","Income Tax - Deferred Domestic","Income Tax - Deferred Foreign","Income Tax Credits","Equity in Affiliates","Other After Tax Income (Expense)","Consolidated Net Income","Minority Interest Expense"," Net Income","Net Income Growth","Net Margin Growth","Extraordinaries & Discontinued Operations","Extra Items & Gain/Loss Sale Of Assets","Cumulative Effect - Accounting Chg","Discontinued Operations","Net Income After Extraordinaries","Preferred Dividends","Net Income Available to Common"," EPS (Basic)","EPS (Basic) Growth","Basic Shares Outstanding"," EPS (Diluted)","EPS (Diluted) Growth","Diluted Shares Outstanding"," EBITDA","EBITDA Growth","EBITDA Margin")
 hello2<-c(" Cash & Short Term Investments","Cash Only","Short-Term Investments","Cash & Short Term Investments Growth","Cash & ST Investments / Total Assets"," Total Accounts Receivable","Accounts Receivables, Net","Accounts Receivables, Gross","Bad Debt/Doubtful Accounts","Other Receivables","Accounts Receivable Growth","Accounts Receivable Turnover","Inventories","Finished Goods","Work in Progress","Raw Materials","Progress Payments & Other","Other Current Assets","Miscellaneous Current Assets","Total Current Assets","","Net Property, Plant & Equipment","Property, Plant & Equipment - Gross",
   "Buildings","Land & Improvements","Computer Software and Equipment","Other Property, Plant & Equipment","Accumulated Depreciation","Total Investments and Advances","Other Long-Term Investments","Long-Term Note Receivable","Intangible Assets","Net Goodwill","Net Other Intangibles","Other Assets","Tangible Other Assets"," Total Assets","Assets - Total - Growth","","ST Debt & Current Portion LT Debt","Short Term Debt","Current Portion of Long Term Debt"," Accounts Payable","Accounts Payable Growth","Income Tax Payable","Other Current Liabilities","Dividends Payable","Accrued Payroll","Miscellaneous Current Liabilities"," Total Current Liabilities","Long-Term Debt",
@@ -23,8 +19,6 @@ hello3<- c(" Net Income before Extraordinaries","Net Income Growth","Depreciatio
 # Find out more about building applications with Shiny here:
 #
 #    http://shiny.rstudio.com
-#
-
 
 
 ui <- fluidPage(
@@ -49,8 +43,8 @@ ui <- fluidPage(
 
     mainPanel(
       tabsetPanel(
-        tabPanel("Balance Sheet", DT::dataTableOutput('table1')),
-        tabPanel("Balance Sheet 2", DT::dataTableOutput('table2')),
+        tabPanel("Financial Statement 1", DT::dataTableOutput('table1')),
+        tabPanel("Financial Statement 2", DT::dataTableOutput('table2')),
         tabPanel("Comparing", plotly::plotlyOutput('comparison'), print("Hover over the plot to interact with specific values. Choose another variable in the drop-down bar to immediately render another plot"))
       )
     )
@@ -77,7 +71,7 @@ server <- function(input, output) {
     create.data(char = input$comp2, state = input$state)[[1]]
   })
   output$comparison <- renderPlotly({
-    dataset <- comparison.plot(x = (grep(input$property, aa()[[2]][-1])), A = aa()[[1]], B = bb(), ticker1 = input$comp1, ticker2 = input$comp2)
+    comparison.plot(x = (grep(input$property, aa()[[2]][-1])), A = aa()[[1]], B = bb(), ticker1 = input$comp1, ticker2 = input$comp2)
   })
   output$table1 <- DT::renderDataTable({
     DT::datatable( aa()[[1]], rownames = TRUE)
@@ -88,4 +82,3 @@ server <- function(input, output) {
 }
 # Run the application
 shinyApp(ui = ui, server = server)
-
