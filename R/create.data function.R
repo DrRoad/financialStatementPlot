@@ -10,6 +10,7 @@
 #'      \item{variables}{A vector of all of the variables contained on the financial statement}
 #' }
 #' @author Ryan Voyack
+#' @importFrom magrittr %>%
 #' @export
 #' @examples
 #' create.data('wmt') #imports Walmart's balance sheet with data from the last 5 years
