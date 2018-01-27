@@ -20,7 +20,7 @@ A \code{list} containing the following attributes:
 }
 }
 \description{
-Import a financial statement from the web (off of marketwatch.com)
+Import a financial statement from the web (off of marketwatch.com). This function makes use of rvest and xml2.
 }
 \examples{
 create.data('wmt') #imports Walmart's balance sheet with data from the last 5 years
