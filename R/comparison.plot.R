@@ -1,6 +1,6 @@
 #' @title Comparing a financial parameter between two companies
 #'
-#' @description Compare any parameter on a financial statement graphically
+#' @description Compare any parameter on a financial statement graphically. This function makes use of the package "plotly"
 #' @param A A \code{matrix} containing the financial statement from the fist company.
 #' @param B A \code{matrix} containing the financial statement from the fist company.
 #' @param x A \code{string} containing the variable within the financial statement that will be plotted.
@@ -38,13 +38,11 @@ comparison.plot <- function(x,A,B,ticker1,ticker2){
   }
 
   if(((length(unique(yes))==1) & (length(unique(yesyes))==1)) & unique(unique(yes)==unique(yesyes))){
-    ###  if each variable set are all in the same denomination (such as millions) within and between each data set
-    key<-substr(substr(z,nchar(z),nchar(z)),1,1)[1]
-    if(key=="%"){
-      legend<- sprintf("All values of '%s' are whole number percentages < 100", y)
-    }else{
-      legend<- sprintf("All values of '%s' are in %sillions of US dollars", y, key)
-    }
+    ###  if each variable set are all in the same denomination (such as millions) within and between each data set, and there are no nulls
+    #    here, a variable of numeric type % will never pass because they will always have one null entry
+    key<-substr(substr(z,nchar(z),nchar(z)),1,1)[1] #acceptably hard coded
+    legend<- sprintf("All values of '%s' \n are in %sillions of US dollars", y, key)
+
     temp1 <- gsub("([M%B)])","",z)
     temp1 <- gsub("([-])","0",temp1)
     temp1 <- as.numeric(gsub("([(])","-",temp1))
@@ -53,24 +51,24 @@ comparison.plot <- function(x,A,B,ticker1,ticker2){
     temp2 <- as.numeric(gsub("([(])","-",temp2))
 
   }else if((((!(isTRUE(as.character(unique(yes)) != '-')) & length(unique(yes))==2))|((!isTRUE(as.character(unique(yesyes)) != '-')) & length(unique(yesyes))==2)) & (unique(unique(yes)==unique(yesyes))|unique(unique(yes)==rev(unique(yesyes))))){
-    ###  if every variable is the same but there are some null entries
+    ###  if both variables is the same but there are some null entries
     i=1
     for(i in c(1:5)){
       if(!(yes[i]=='-')){
         #this is hard coded for the first company but this is okay considering the conditional
-        key<-substr(substr(z,nchar(z),nchar(z)),1,1)[1]
+        key<-substr(substr(z,nchar(z),nchar(z)),1,1)[i]
       }
     }
     if(key=="%"){
-      legend<- sprintf("All values of '%s' are percentages < 100", y)
+      legend <- sprintf("All values of '%s' \n are percentages < 100", y)
       ###  if everything is a percentage
       ###  make everything (if all percentages) a numeric input type
-      temp1 <- gsub("([M%B)])","",z)
-      temp1 <- as.numeric(gsub("([-])","0",temp1))
-      temp2 <- gsub("([M%B)])","",z1)
-      temp2 <- as.numeric(gsub("([-])","0",temp2))
+      temp1 <- gsub("([%)])","",z)
+      temp1 <- as.numeric(gsub("([-])","-0",temp1))
+      temp2 <- gsub("([%)])","",z1)
+      temp2 <- as.numeric(gsub("([-])","-0",temp2))
     }else{
-      legend<- sprintf("All values of '%s' are in %sillions of US dollars", y, key)
+      legend<- sprintf("All values of '%s' \n are in %sillions of US dollars", y, key)
       i=1
       for(i in c(1:length(nchar(z)))){
         #    this range argument is hard coded for both z and z1, this is obviously reasonable
@@ -102,7 +100,7 @@ comparison.plot <- function(x,A,B,ticker1,ticker2){
       temp2<-z1
     }
   }else{
-    legend<- sprintf("All values of '%s' are in Millions of US dollars", y)
+    legend<- sprintf("All values of '%s' \n are in Millions of US dollars", y)
     i=1
     for(i in c(1:length(nchar(z)))){
       #    this range argument is hard coded for both z and z1, this is obviously reasonable
@@ -153,4 +151,3 @@ comparison.plot <- function(x,A,B,ticker1,ticker2){
           yaxis = list(title = y))
 }
 
-#YES
