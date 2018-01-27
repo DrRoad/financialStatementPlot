@@ -21,7 +21,7 @@ comparison.plot(x, A, B, ticker1, ticker2)
 A \code{plot} or \code{ggplot} object.
 }
 \description{
-Compare any parameter on a financial statement graphically
+Compare any parameter on a financial statement graphically. This function makes use of the package "plotly"
 }
 \examples{
 comparison.plot('Cash Only',create.data('wmt','Balance-Sheet'),create.data('aapl','Balance-Sheet'),'wmt','aapl')
