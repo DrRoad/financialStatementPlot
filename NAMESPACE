@@ -2,3 +2,4 @@
 
 export(comparison.plot)
 export(create.data)
+importFrom(magrittr,"%>%")
