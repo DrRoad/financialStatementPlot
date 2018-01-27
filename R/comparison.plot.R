@@ -8,6 +8,7 @@
 #' @param ticker2 A \code{string} containing the stock ticker of the company in argument B.
 #' @return A \code{plot} or \code{ggplot} object.
 #' @author Ryan Voyack
+#' @importFrom magrittr %>%
 #' @export
 #' @examples
 #' comparison.plot('Cash Only',create.data('wmt','Balance-Sheet'),create.data('aapl','Balance-Sheet'),'wmt','aapl')
