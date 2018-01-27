@@ -1,6 +1,6 @@
 #' @title Import a financial statement
 #'
-#' @description Import a financial statement from the web (off of marketwatch.com)
+#' @description Import a financial statement from the web (off of marketwatch.com). This function makes use of rvest and xml2.
 #' @param char A \code{string} containing the formal stock ticker of a desired company
 #' @param state A \code{string} containing the desired financial statement of the company
 #'     must be a character in the vector, c("Income-Statement", "Balance-Sheet", "Cash-Flows")
@@ -27,23 +27,23 @@ create.data <- function(char,state){
   a<-'https://www.marketwatch.com/investing/stock/'
   b<-'/financials/'
   html <- paste(a,char,b,c,sep='')
-  year17 <- rvest::read_html(html) %>%
+  year17 <- xml2::read_html(html) %>%
     rvest::html_nodes(xpath='//tr//*[(((count(preceding-sibling::*) + 1) = 6) and parent::*)]') %>%
     rvest::html_text()
-  year16 <- rvest::read_html(html) %>%
+  year16 <- xml2::read_html(html) %>%
     rvest::html_nodes(xpath='//*[contains(concat( " ", @class, " " ), concat( " ", "valueCell", " " )) and (((count(preceding-sibling::*) + 1) = 5) and parent::*)] | //th[(((count(preceding-sibling::*) + 1) = 5) and parent::*)]') %>%
     rvest::html_text()
-  year15 <- rvest::read_html(html) %>%
+  year15 <- xml2::read_html(html) %>%
     rvest::html_nodes(xpath='//*[contains(concat( " ", @class, " " ), concat( " ", "valueCell", " " )) and (((count(preceding-sibling::*) + 1) = 4) and parent::*)] | //th[(((count(preceding-sibling::*) + 1) = 4) and parent::*)]') %>%
     rvest::html_text()
-  year14 <- rvest::read_html(html) %>%
+  year14 <- xml2::read_html(html) %>%
     rvest::html_nodes(xpath='//*[contains(concat( " ", @class, " " ), concat( " ", "valueCell", " " )) and (((count(preceding-sibling::*) + 1) = 3) and parent::*)] | //th[(((count(preceding-sibling::*) + 1) = 3) and parent::*)]') %>%
     rvest::html_text()
-  year13 <- rvest::read_html(html) %>%
+  year13 <- xml2::read_html(html) %>%
     rvest::html_nodes(xpath='//*[contains(concat( " ", @class, " " ), concat( " ", "valueCell", " " )) and (((count(preceding-sibling::*) + 1) = 2) and parent::*)] | //th[(((count(preceding-sibling::*) + 1) = 2) and parent::*)]') %>%
     rvest::html_text()
 
-  variables <- rvest::read_html(html) %>%
+  variables <- xml2::read_html(html) %>%
     rvest::html_nodes(xpath='//*[contains(concat( " ", @class, " " ), concat( " ", "rowTitle", " " ))]') %>%
     rvest::html_text()
   #create matrix
